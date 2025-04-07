@@ -27,9 +27,15 @@ Each example includes:
 
 ### 1. `esp_web_server/`
 **ESP32 Access Point + Web UI**  
-The ESP32 creates its own Wi-Fi network and hosts a sleek control dashboard in your browser. Includes:
-- Live temperature readout
-- Buttons to control a **servo** and the **onboard LED**
+The ESP32 creates its own Wi-Fi network and serves a local control dashboard that you can access through your phone or laptop browser.
+
+Includes:
+- ✅ A live **simulated temperature** value
+- ✅ Buttons to turn the **onboard LED ON and OFF**
+
+Perfect for:
+- Testing connected interfaces without needing internet
+- Quickly building standalone, browser-based hardware controls
 
 ### 2. `esp_ble_peripheral/`
 **ESP32 as BLE Device**  
@@ -38,8 +44,8 @@ The ESP32 acts as a Bluetooth peripheral:
 - Accepts a write command to toggle the onboard LED  
 Can be tested with:
 - 📱 [nRF Connect](https://www.nordicsemi.com/Products/Development-tools/nRF-Connect-for-mobile) (recommended)
-- 🧑‍💻 Optional SwiftUI BLE app template
-
+- 🧑‍💻 Optional SwiftUI BLE app template (Requires Mac / XCode)
+ 
 ### 3. `esp_firebase_comms/`
 **ESP32 Sends Data to Firebase**  
 The ESP32 connects to Wi-Fi and pushes sensor data to [Firebase Realtime Database](https://firebase.google.com/products/realtime-database), where it can be visualized or accessed by multiple devices. Includes:
@@ -47,7 +53,7 @@ The ESP32 connects to Wi-Fi and pushes sensor data to [Firebase Realtime Databas
 - Template for reading the data in a browser or mobile app
 
 Great for:
-- Storing time-series or live data
+- Storing live data
 - Multi-device syncing
 - Creating cloud-connected dashboards
 
