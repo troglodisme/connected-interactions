@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Local Web Server</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: 'Courier New', Courier, monospace;
+      background: #e0e0e0;
+      color: #111;
+      margin: 0;
+      padding: 0;
+    }
+    .header {
+      background-color: #111;
+      color: white;
+      padding: 18px;
+      text-align: center;
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+    .container {
+      width: 90%;
+      max-width: 400px;
+      margin: 20px auto;
+      background: #f9f9f9;
+      padding: 20px;
+      box-shadow: 4px 4px 0 #999;
+      border: 2px solid #111;
+    }
+    .data-block {
+      border-left: 4px solid #444;
+      padding-left: 10px;
+      margin-bottom: 16px;
+    }
+    .label {
+      font-weight: bold;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      color: #111;
+    }
+    .value {
+      font-size: 1.4rem;
+      font-weight: bold;
+      margin: 4px 0;
+      color: #111;
+    }
+    .desc {
+      font-size: 0.8rem;
+      color: #555;
+      font-style: italic;
+    }
+    .button {
+      display: block;
+      width: 100%;
+      margin-top: 20px;
+      background: #111;
+      color: white;
+      padding: 12px;
+      font-size: 1rem;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+    }
+    .button:hover {
+      background: #333;
+    }
+    .footer {
+      text-align: center;
+      font-size: 0.75rem;
+      color: #333;
+      margin-top: 24px;
+      font-weight: bold;
+    }
+    a {
+      color: #111;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">Simple Monitor</div>
+  <div class="container">
+    <div class="data-block">
+      <div class="label">Temperature</div>
+      <div class="value" id="temp">23.5 °C</div>
+      <div class="desc">Fake simulated value</div>
+    </div>
+
+    <button class="button" onclick="toggleLed()">Toggle LED</button>
+
+    <div class="footer">
+        <p>giulio ammendola, 2025</p>
+    </div>
+  </div>
+
+  <script>
+    // Simulate temperature changes
+    let temp = 23.5;
+    let dir = 1;
+
+    setInterval(() => {
+      temp += 0.1 * dir;
+      if (temp > 24.5 || temp < 22.0) dir *= -1;
+      document.getElementById("temp").innerText = temp.toFixed(1) + " °C";
+    }, 1500);
+
+    // Simulated LED state
+    let ledState = false;
+    function toggleLed() {
+      ledState = !ledState;
+      alert("LED is now " + (ledState ? "ON" : "OFF"));
+    }
+  </script>
+</body>
+</html>
