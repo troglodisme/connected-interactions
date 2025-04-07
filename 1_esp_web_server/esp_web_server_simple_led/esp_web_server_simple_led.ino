@@ -1,28 +1,19 @@
-#include <WiFi.h>                    // For setting up WiFi Access Point
-#include <WebServer.h>               // Simple web server for handling HTTP routes
-#include <Adafruit_NeoPixel.h>       // For controlling the NeoPixel LED
+#include <WiFi.h>          // For setting up WiFi Access Point
+#include <WebServer.h>     // Simple web server for handling HTTP routes
 
-// LED setup
-#define LED_PIN 10                   // Pin where NeoPixel is connected
-#define NUM_PIXELS 1                 // Number of pixels (1 LED)
-Adafruit_NeoPixel pixels(NUM_PIXELS, LED_PIN, NEO_GRB + NEO_KHZ800);
+#define LED_PIN 10         // Pin where normal LED is connected
 
-// Web server on port 80 (default HTTP)
-WebServer server(80);
+WebServer server(80);      // Web server on port 80
 
-// WiFi credentials (Access Point mode)
-const char* ssid = "ChageThisWifiName";
+const char* ssid = "ChangeThisWifiName";
 const char* password = "password";
 
-// State variables
-bool ledOn = false;                 // Track if LED is on or off
-float fakeTemp = 22.0;              // Simulated temperature value
-bool increasing = true;             // Direction of fake temp simulation
+bool ledOn = false;
+float fakeTemp = 22.0;
+bool increasing = true;
 
 // ==================== HTML GENERATOR ====================
 String getStyledHTML(float temp) {
-  // Generates the HTML for the webpage, inserting the temperature and LED state
-
   String html = R"rawliteral(
 <!DOCTYPE html>
 <html lang="en">
@@ -133,43 +124,33 @@ String getStyledHTML(float temp) {
 }
 
 // ==================== HTTP ROUTES ====================
-
-// Handle the main page
 void handleRoot() {
   server.send(200, "text/html", getStyledHTML(fakeTemp));
 }
 
-// Handle LED toggle button
 void handleToggle() {
   ledOn = !ledOn;
 
-  if (ledOn) {
-    pixels.setPixelColor(0, pixels.Color(0, 255, 0));  // LED green
-  } else {
-    pixels.clear();  // LED off
-  }
-  pixels.show();
+  digitalWrite(LED_PIN, ledOn ? HIGH : LOW);
 
-  Serial.println(ledOn ? "LED is ON" : "LED is OFF");  // Debug print
+  Serial.println(ledOn ? "LED is ON" : "LED is OFF");
 
-  server.sendHeader("Location", "/", true);  // Redirect back to homepage
-  server.send(303);  // HTTP 303 See Other
+  server.sendHeader("Location", "/", true);
+  server.send(303);
 }
 
 // ==================== SETUP ====================
 void setup() {
   Serial.begin(115200);
 
-  pixels.begin();
-  pixels.show();  // Turn off LED initially
+  pinMode(LED_PIN, OUTPUT);
+  digitalWrite(LED_PIN, LOW);  // Start with LED off
 
-  // Set up WiFi as access point
   WiFi.softAP(ssid, password);
   IPAddress IP = WiFi.softAPIP();
   Serial.print("AP IP address: ");
   Serial.println(IP);
 
-  // Register HTTP routes
   server.on("/", handleRoot);
   server.on("/toggle", HTTP_POST, handleToggle);
   server.begin();
@@ -177,11 +158,10 @@ void setup() {
   Serial.println("Web server started.");
 }
 
-// ==================== MAIN LOOP ====================
+// ==================== LOOP ====================
 void loop() {
-  server.handleClient();  // Respond to web requests
+  server.handleClient();
 
-  // Simulate temperature every few seconds
   static unsigned long lastUpdate = 0;
   if (millis() - lastUpdate > 3000) {
     if (increasing) {
