@@ -90,4 +90,11 @@ void loop() {
       Serial.printf("Simple LED -> %s\n", simpleValue ? "ON" : "OFF");
     }
   }
+
+  // OPTIONAL SAFETY CLEANUP (e.g. on disconnect or timeout)
+if (!BLE.connected()) {
+  pixels.clear();
+  pixels.show();  // Force LED off
+  pinMode(LED_PIN, INPUT); // Release the pin (restores to default state)
+}
 }

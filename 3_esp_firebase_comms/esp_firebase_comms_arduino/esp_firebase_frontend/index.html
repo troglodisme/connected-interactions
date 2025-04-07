@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Group 1 Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <style>
+    :root {
+      --bg: #f9fafb;
+      --card: #ffffff;
+      --text: #111827;
+      --accent: #00CE56;
+      --accent-dark: #00b34c;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Helvetica Neue', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 16px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
+      padding: 2rem;
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .value-display {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .status {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+    }
+
+    button {
+      flex: 1;
+      padding: 0.75rem 1rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 12px;
+      background: var(--accent);
+      color: white;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    button:hover {
+      background: var(--accent-dark);
+    }
+
+    @media (max-width: 480px) {
+      .card {
+        padding: 1.5rem;
+      }
+
+      h1 {
+        font-size: 1.2rem;
+      }
+
+      .value-display {
+        font-size: 1.5rem;
+      }
+
+      .status {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h1>Group 1 Dashboard</h1>
+    <div class="value-display">🌡️ Temp: <span id="temp">--</span>°C</div>
+    <div class="status">💡 LED is <span id="led">--</span></div>
+    <div class="button-group">
+      <button onclick="setLED(true)">Turn ON</button>
+      <button onclick="setLED(false)">Turn OFF</button>
+    </div>
+  </div>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+
+  <script>
+    // === Firebase Config ===
+    const firebaseConfig = {
+      apiKey: "YOUR-KEY",
+      databaseURL: "YOUR-DATABASE",
+      projectId: "connected-interactions",
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    const path = "/workshop_data/group1";
+
+    // === Live Listeners ===
+    db.ref(path + "/temperature").on("value", (snap) => {
+      document.getElementById("temp").innerText = snap.val();
+    });
+
+    db.ref(path + "/led").on("value", (snap) => {
+      document.getElementById("led").innerText = snap.val() ? "ON" : "OFF";
+    });
+
+    // === Toggle LED ===
+    function setLED(state) {
+      db.ref(path + "/led").set(state);
+    }
+  </script>
+
+</body>
+</html>
