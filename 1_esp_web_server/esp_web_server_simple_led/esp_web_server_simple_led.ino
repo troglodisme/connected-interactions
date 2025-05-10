@@ -5,7 +5,7 @@
 
 WebServer server(80);      // Web server on port 80
 
-const char* ssid = "ChangeThisWifiName";
+const char* ssid = "esp32-web-server";
 const char* password = "password";
 
 bool ledOn = false;
